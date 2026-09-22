@@ -3,11 +3,11 @@ import { LoginRequestSchema } from "@qarven/mono/oryon/identity/v1/authenticatio
 import { createServerFn } from "@tanstack/react-start";
 import { authenticationClient } from "#/libraries/clients";
 import { catchErrorServer } from "#/libraries/clients/error";
-import { type LoginOutput, loginSchema } from "../model/signin";
+import { type SignInOutput, signInSchema } from "../model/signin";
 
 export const signInFn = createServerFn({ method: "POST" })
-  .validator((input) => loginSchema.parse(input))
-  .handler(async ({ data: input }): Promise<LoginOutput> => {
+  .validator((input) => signInSchema.parse(input))
+  .handler(async ({ data: input }): Promise<SignInOutput> => {
     try {
       const request = create(LoginRequestSchema, {
         identifier: input.email,

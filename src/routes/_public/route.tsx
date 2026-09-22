@@ -41,7 +41,7 @@ function Header() {
           </Button>
 
           <Button className="rounded-sm" type="button" variant="default">
-            <Link className="text-white" to="/signin">
+            <Link className="text-white" to="/signup">
               Sign up
             </Link>
           </Button>
