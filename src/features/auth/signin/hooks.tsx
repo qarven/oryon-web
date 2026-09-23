@@ -3,8 +3,9 @@ import { useRouter } from "@tanstack/react-router";
 import type { SubmitEvent } from "react";
 import { useAppForm } from "#/components/form/use-form";
 import { toast } from "#/components/ui/toast";
-import { type SignInOutput, signInSchema } from "../model/signin";
-import { signInFn } from "../servers/signin.server";
+import type { SignInOutput } from "./model";
+import { signInSchema } from "./schema";
+import { signInFn } from "./service";
 
 export const useSignIn = () => {
   const router = useRouter();

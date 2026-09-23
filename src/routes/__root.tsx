@@ -14,7 +14,7 @@ import appCss from "#/app/styles.css?url";
 import { NotFoundComponent } from "#/components/404";
 import { Toaster } from "#/components/ui/toast";
 import { TooltipProvider } from "#/components/ui/tooltip";
-import { getLocale } from "#/libraries/paraglide/runtime";
+import { getLocale } from "#/lib/paraglide/runtime";
 
 interface MyRouterContext {
   queryClient: QueryClient;

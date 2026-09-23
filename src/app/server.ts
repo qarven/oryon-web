@@ -1,6 +1,6 @@
 import handler from "@tanstack/react-start/server-entry";
 import { FastResponse } from "srvx";
-import { paraglideMiddleware } from "#/libraries/paraglide/server";
+import { paraglideMiddleware } from "#/lib/paraglide/server";
 
 // https://tanstack.com/start/latest/docs/framework/react/guide/hosting#performance-tip-fastresponse
 globalThis.Response = FastResponse;

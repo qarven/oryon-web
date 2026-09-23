@@ -12,10 +12,10 @@
   },
   "aliases": {
     "components": "#/components",
-    "utils": "#/libraries/utils/tailwind",
+    "utils": "#/lib/utils/tailwind",
     "ui": "#/components/ui",
-    "lib": "#/libraries",
-    "hooks": "#/libraries/hooks"
+    "lib": "#/lib",
+    "hooks": "#/lib/hooks"
   },
   "iconLibrary": "lucide",
   "rtl": false,

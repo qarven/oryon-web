@@ -1,9 +1,7 @@
 import { MfaFactorType as ProtoMfaFactorType } from "@qarven/mono/oryon/identity/v1/enum_pb";
-import { MfaFactorType, type MfaFactorTypeType } from "../../model/enum";
+import { MfaFactorType } from "../types/mfa-factor-type";
 
-export function toModelMfaFactorType(
-  value: ProtoMfaFactorType
-): MfaFactorTypeType {
+export function toModelMfaFactorType(value: ProtoMfaFactorType): MfaFactorType {
   switch (value) {
     case ProtoMfaFactorType.TOTP:
       return MfaFactorType.Totp;

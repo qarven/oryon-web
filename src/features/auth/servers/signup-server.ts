@@ -1,8 +1,8 @@
 import { create } from "@bufbuild/protobuf";
 import { RegistrationRequestSchema } from "@qarven/mono/oryon/identity/v1/authentication_pb";
 import { createServerFn } from "@tanstack/react-start";
-import { authenticationClient } from "#/libraries/clients";
-import { catchErrorServer } from "#/libraries/clients/error";
+import { authenticationClient } from "#/lib/clients";
+import { catchErrorServer } from "#/lib/clients/error";
 import { type SignUpOutput, signUpSchema } from "../model/signup";
 
 export const signUpFn = createServerFn({ method: "POST" })

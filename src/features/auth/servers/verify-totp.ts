@@ -2,8 +2,8 @@ import { create } from "@bufbuild/protobuf";
 import { CompleteMfaRequestSchema } from "@qarven/mono/oryon/identity/v1/authentication_pb";
 import { MfaFactorType } from "@qarven/mono/oryon/identity/v1/enum_pb";
 import { createServerFn } from "@tanstack/react-start";
-import { authenticationClient } from "#/libraries/clients";
-import { catchErrorServer } from "#/libraries/clients/error";
+import { authenticationClient } from "#/lib/clients";
+import { catchErrorServer } from "#/lib/clients/error";
 import {
   type TwoFactorAppOutput,
   twoFactorAppSchema,
