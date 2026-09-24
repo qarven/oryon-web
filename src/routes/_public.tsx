@@ -28,11 +28,11 @@ export const Route = createFileRoute("/_public")({
           </nav>
 
           <div className="flex items-center gap-2">
-            <Button className="rounded-sm" type="button" variant="outline">
+            <Button type="button" variant="outline">
               <Link to="/signin">Sign in</Link>
             </Button>
 
-            <Button className="rounded-sm" type="button" variant="default">
+            <Button type="button" variant="default">
               <Link className="text-white" to="/signup">
                 Sign up
               </Link>

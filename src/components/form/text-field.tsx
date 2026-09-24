@@ -12,7 +12,7 @@ import { useFieldContext } from "./use-form";
 
 interface TextFieldProps extends ComponentProps<"input"> {
   description?: string;
-  label: string;
+  label?: string;
 }
 
 export default function TextField({
@@ -29,7 +29,7 @@ export default function TextField({
 
   return (
     <Field data-invalid={isInvalid}>
-      <FieldLabel htmlFor={field.name}>{label}</FieldLabel>
+      {label ? <FieldLabel htmlFor={field.name}>{label}</FieldLabel> : null}
       <Input
         aria-invalid={isInvalid}
         autoComplete={autoComplete}

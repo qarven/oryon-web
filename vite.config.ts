@@ -14,7 +14,7 @@ const config = defineConfig({
     paraglideVitePlugin({
       localStorageKey: "locale",
       project: "./project.inlang",
-      outdir: "./src/libraries/paraglide",
+      outdir: "./src/lib/paraglide",
       outputStructure: "message-modules",
       strategy: ["url", "localStorage", "preferredLanguage", "baseLocale"],
       urlPatterns: [
