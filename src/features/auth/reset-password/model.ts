@@ -1,8 +1,5 @@
-import { z } from "zod";
-
-export const resetPasswordSchema = z.object({
-  email: z.email("Please enter a valid email address"),
-});
+import type { z } from "zod";
+import type { resetPasswordSchema } from "./schema";
 
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
 

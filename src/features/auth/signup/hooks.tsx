@@ -1,42 +1,47 @@
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "@tanstack/react-router";
 import type { SubmitEvent } from "react";
 import { useAppForm } from "#/components/form/use-form";
 import { toast } from "#/components/ui/toast";
-import { twoFactorAppSchema } from "../model/two-factor-app";
-import { verifyTotpFn } from "../servers/verify-totp";
+import type { SignUpOutput } from "./model";
+import { signUpSchema } from "./schema";
+import { signUpFn } from "./service";
 
-export const useTwoFactorApp = () => {
-  const router = useRouter();
-
+export const useSignUp = () => {
   const { mutateAsync } = useMutation({
-    mutationFn: verifyTotpFn,
+    mutationFn: signUpFn,
     onError: (error) => {
       toast.add({
         type: "error",
-        title: "Verification failed",
         description: error.message,
       });
     },
-    onSuccess: () => {
+    onSuccess: (output: SignUpOutput) => {
+      console.log(output);
+
+      if (output.mfaRequired) {
+        toast.add({
+          type: "info",
+          description: "mfa",
+        });
+        return;
+      }
+
       toast.add({
         type: "info",
-        title: "Signed in",
-        description: "You have successfully signed in.",
-      });
-      router.navigate({
-        replace: true,
-        to: "/",
+        description: "success",
       });
     },
   });
 
   const form = useAppForm({
     defaultValues: {
-      code: "",
+      name: "",
+      email: "",
+      password: "",
+      captchaToken: "",
     },
     onSubmit: async ({ value }) => await mutateAsync({ data: value }),
-    validators: { onSubmit: twoFactorAppSchema },
+    validators: { onSubmit: signUpSchema },
   });
 
   const onSubmitDefault = (e: SubmitEvent) => {

@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Google } from "#/components/logos/google";
 import { Button } from "#/components/ui/button";
 import { Field, FieldDescription, FieldSeparator } from "#/components/ui/field";
-import { useSignUp } from "#/features/auth/hooks/use-signup";
 import { FormLayout } from "#/features/auth/shared/components/form-layout";
+import { useSignUp } from "#/features/auth/signup";
 
 export const Route = createFileRoute("/_auth/signup")({
   head: () => ({

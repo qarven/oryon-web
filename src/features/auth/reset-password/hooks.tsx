@@ -2,11 +2,9 @@ import { useMutation } from "@tanstack/react-query";
 import type { SubmitEvent } from "react";
 import { useAppForm } from "#/components/form/use-form";
 import { toast } from "#/components/ui/toast";
-import {
-  type ResetPasswordOutput,
-  resetPasswordSchema,
-} from "../model/reset-password";
-import { resetPasswordFn } from "../servers/reset-password";
+import type { ResetPasswordOutput } from "./model";
+import { resetPasswordSchema } from "./schema";
+import { resetPasswordFn } from "./service";
 
 export const useResetPassword = () => {
   const { mutateAsync } = useMutation({

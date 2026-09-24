@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Field, FieldDescription, FieldSeparator } from "#/components/ui/field";
-import { useResetPassword } from "#/features/auth/hooks/use-reset-password";
+import { useResetPassword } from "#/features/auth/reset-password";
 import { FormLayout } from "#/features/auth/shared/components/form-layout";
 
 export const Route = createFileRoute("/_auth/reset-password")({

@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-pnpm run ts
+bun ts

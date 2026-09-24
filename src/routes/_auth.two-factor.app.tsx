@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Field, FieldDescription, FieldSeparator } from "#/components/ui/field";
-import { useTwoFactorApp } from "#/features/auth/hooks/use-two-factor-app";
 import { FormLayout } from "#/features/auth/shared/components/form-layout";
+import { useTwoFactorApp } from "#/features/auth/two-factor-app";
 
 export const Route = createFileRoute("/_auth/two-factor/app")({
   head: () => ({
