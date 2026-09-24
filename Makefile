@@ -1,5 +1,5 @@
 .PHONY: help install run build translate fix clean test podman-build podman-run
-PM ?= pnpm
+PM ?= bun
 RUN = $(PM) run
 
 help: ## List available targets.

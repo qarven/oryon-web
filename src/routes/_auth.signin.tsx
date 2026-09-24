@@ -6,8 +6,8 @@ import {
   FieldDescription,
   FieldSeparator,
 } from "#/components/ui/field.tsx";
-import { FormLayout } from "#/features/auth/components/form-layout";
-import { useSignIn } from "#/features/auth/hooks/use-signin";
+import { FormLayout } from "#/features/auth/shared/components/form-layout";
+import { useSignIn } from "#/features/auth/signin";
 
 export const Route = createFileRoute("/_auth/signin")({
   head: () => ({

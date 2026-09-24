@@ -1,11 +1,7 @@
 import { useSelector } from "@tanstack/react-form";
 import { OTPInput } from "input-otp";
 import { Field, FieldError, FieldLabel } from "#/components/ui/field";
-import {
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-} from "#/components/ui/input-otp";
+import { InputOTPGroup, InputOTPSlot } from "#/components/ui/input-otp";
 import { useFieldContext } from "./use-form";
 
 interface OtpFieldProps {
@@ -27,7 +23,6 @@ export default function OtpField({
   const errors = useSelector(field.store, (state) => state.meta.errors);
 
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
-  const middle = Math.floor(length / 2);
   const slots = Array.from({ length }, (_, index) => index);
 
   return (
@@ -49,14 +44,8 @@ export default function OtpField({
         }}
         value={field.state.value}
       >
-        <InputOTPGroup>
-          {slots.slice(0, middle).map((index) => (
-            <InputOTPSlot index={index} key={index} />
-          ))}
-        </InputOTPGroup>
-        <InputOTPSeparator />
-        <InputOTPGroup>
-          {slots.slice(middle).map((index) => (
+        <InputOTPGroup className="*:data-[slot=input-otp-slot]:h-10 *:data-[slot=input-otp-slot]:w-full *:data-[slot=input-otp-slot]:text-lg">
+          {slots.map((index) => (
             <InputOTPSlot index={index} key={index} />
           ))}
         </InputOTPGroup>
