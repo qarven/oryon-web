@@ -11,11 +11,13 @@
 import { Route as rootRouteImport } from './../routes/__root'
 import { Route as AuthRouteImport } from './../routes/_auth'
 import { Route as PublicRouteImport } from './../routes/_public'
+import { Route as ConsoleRouteImport } from './../routes/console'
 import { Route as AuthResetPasswordRouteImport } from './../routes/_auth.reset-password'
 import { Route as AuthSigninRouteImport } from './../routes/_auth.signin'
 import { Route as AuthSignupRouteImport } from './../routes/_auth.signup'
 import { Route as AuthTwoFactorRouteImport } from './../routes/_auth.two-factor'
 import { Route as PublicIndexRouteImport } from './../routes/_public.index'
+import { Route as ConsoleIndexRouteImport } from './../routes/console.index'
 import { Route as AuthTwoFactorIndexRouteImport } from './../routes/_auth.two-factor.index'
 import { Route as AuthTwoFactorAppRouteImport } from './../routes/_auth.two-factor.app'
 import { Route as AuthTwoFactorRecoveryRouteImport } from './../routes/_auth.two-factor.recovery'
@@ -30,6 +32,11 @@ const AuthRoute = AuthRouteImport.update({
 } as any)
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConsoleRoute = ConsoleRouteImport.update({
+  id: '/console',
+  path: '/console',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
@@ -56,6 +63,11 @@ const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => PublicRoute,
+} as any)
+const ConsoleIndexRoute = ConsoleIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ConsoleRoute,
 } as any)
 const AuthTwoFactorIndexRoute = AuthTwoFactorIndexRouteImport.update({
   id: '/',
@@ -97,10 +109,12 @@ const PublicLegalTermsOfServiceRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
+  '/console': typeof ConsoleRouteWithChildren
   '/reset-password': typeof AuthResetPasswordRoute
   '/signin': typeof AuthSigninRoute
   '/signup': typeof AuthSignupRoute
   '/two-factor': typeof AuthTwoFactorRouteWithChildren
+  '/console/': typeof ConsoleIndexRoute
   '/two-factor/app': typeof AuthTwoFactorAppRoute
   '/two-factor/recovery': typeof AuthTwoFactorRecoveryRoute
   '/two-factor/webauthn': typeof AuthTwoFactorWebauthnRoute
@@ -114,6 +128,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof AuthResetPasswordRoute
   '/signin': typeof AuthSigninRoute
   '/signup': typeof AuthSignupRoute
+  '/console': typeof ConsoleIndexRoute
   '/two-factor/app': typeof AuthTwoFactorAppRoute
   '/two-factor/recovery': typeof AuthTwoFactorRecoveryRoute
   '/two-factor/webauthn': typeof AuthTwoFactorWebauthnRoute
@@ -126,11 +141,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
+  '/console': typeof ConsoleRouteWithChildren
   '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_auth/signin': typeof AuthSigninRoute
   '/_auth/signup': typeof AuthSignupRoute
   '/_auth/two-factor': typeof AuthTwoFactorRouteWithChildren
   '/_public/': typeof PublicIndexRoute
+  '/console/': typeof ConsoleIndexRoute
   '/_auth/two-factor/app': typeof AuthTwoFactorAppRoute
   '/_auth/two-factor/recovery': typeof AuthTwoFactorRecoveryRoute
   '/_auth/two-factor/webauthn': typeof AuthTwoFactorWebauthnRoute
@@ -143,10 +160,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/console'
     | '/reset-password'
     | '/signin'
     | '/signup'
     | '/two-factor'
+    | '/console/'
     | '/two-factor/app'
     | '/two-factor/recovery'
     | '/two-factor/webauthn'
@@ -160,6 +179,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signin'
     | '/signup'
+    | '/console'
     | '/two-factor/app'
     | '/two-factor/recovery'
     | '/two-factor/webauthn'
@@ -171,11 +191,13 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_auth'
     | '/_public'
+    | '/console'
     | '/_auth/reset-password'
     | '/_auth/signin'
     | '/_auth/signup'
     | '/_auth/two-factor'
     | '/_public/'
+    | '/console/'
     | '/_auth/two-factor/app'
     | '/_auth/two-factor/recovery'
     | '/_auth/two-factor/webauthn'
@@ -188,6 +210,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   PublicRoute: typeof PublicRouteWithChildren
+  ConsoleRoute: typeof ConsoleRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -204,6 +227,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof PublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/console': {
+      id: '/console'
+      path: '/console'
+      fullPath: '/console'
+      preLoaderRoute: typeof ConsoleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/reset-password': {
@@ -240,6 +270,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof PublicIndexRouteImport
       parentRoute: typeof PublicRoute
+    }
+    '/console/': {
+      id: '/console/'
+      path: '/'
+      fullPath: '/console/'
+      preLoaderRoute: typeof ConsoleIndexRouteImport
+      parentRoute: typeof ConsoleRoute
     }
     '/_auth/two-factor/': {
       id: '/_auth/two-factor/'
@@ -344,9 +381,21 @@ const PublicRouteChildren: PublicRouteChildren = {
 const PublicRouteWithChildren =
   PublicRoute._addFileChildren(PublicRouteChildren)
 
+interface ConsoleRouteChildren {
+  ConsoleIndexRoute: typeof ConsoleIndexRoute
+}
+
+const ConsoleRouteChildren: ConsoleRouteChildren = {
+  ConsoleIndexRoute: ConsoleIndexRoute,
+}
+
+const ConsoleRouteWithChildren =
+  ConsoleRoute._addFileChildren(ConsoleRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   PublicRoute: PublicRouteWithChildren,
+  ConsoleRoute: ConsoleRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
