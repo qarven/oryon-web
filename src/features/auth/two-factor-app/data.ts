@@ -1,20 +1,30 @@
 import { create } from "@bufbuild/protobuf";
-import { CompleteMfaRequestSchema } from "@qarven/mono/oryon/identity/v1/authentication_pb";
+import { CompleteLoginMfaRequestSchema } from "@qarven/mono/oryon/identity/v1/authentication_pb";
 import { MfaFactorType } from "@qarven/mono/oryon/identity/v1/enum_pb";
 import { authenticationClient } from "#/lib/clients";
-import type { TwoFactorAppInput, TwoFactorAppOutput } from "./model";
 
-export const verifyTotp = async (
-  input: TwoFactorAppInput
-): Promise<TwoFactorAppOutput> => {
-  const request = create(CompleteMfaRequestSchema, {
+export const verifyTotp = async (input: {
+  code: string;
+  flowId: bigint;
+}): Promise<{
+  token: { accessToken: string; expiresIn: bigint; refreshToken: string };
+}> => {
+  const request = create(CompleteLoginMfaRequestSchema, {
     code: input.code,
     factorType: MfaFactorType.TOTP,
-    flowId: BigInt(1),
+    flowId: input.flowId,
   });
-  await authenticationClient.completeMfa(request);
+  const response = await authenticationClient.completeLoginMfa(request);
 
-  // clearMfaFlowCookie();
+  if (!response.token) {
+    throw new Error("unsupported response api");
+  }
 
-  return { success: true };
+  return {
+    token: {
+      accessToken: response.token.accessToken,
+      expiresIn: response.token.expiresIn,
+      refreshToken: response.token.refreshToken,
+    },
+  };
 };

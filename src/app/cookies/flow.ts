@@ -4,9 +4,9 @@ import {
   setCookie,
 } from "@tanstack/react-start/server";
 import { env } from "#/env";
+import type { Flow } from "#/features/auth/shared/types/flow";
 import type { FlowState } from "#/features/auth/shared/types/flow-state";
 import type { FlowType } from "#/features/auth/shared/types/flow-type";
-import type { Flow } from "#/features/auth/signin/model";
 
 const FLOW_COOKIE_NAME = "oryon.flow" as const;
 

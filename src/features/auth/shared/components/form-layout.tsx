@@ -10,7 +10,7 @@ import { FieldGroup } from "#/components/ui/field";
 
 interface FormLayoutProps extends Omit<ComponentProps<"form">, "noValidate"> {
   children: ReactNode;
-  subtitle: string;
+  subtitle: ReactNode;
   title: string;
 }
 

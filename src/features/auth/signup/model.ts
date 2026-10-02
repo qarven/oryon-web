@@ -3,6 +3,8 @@ import type { signUpSchema } from "./schema";
 
 export type SignUpInput = z.infer<typeof signUpSchema>;
 
-export interface SignUpOutput {
-  mfaRequired: boolean;
+export interface RegistrationInput {
+  email?: string;
+  name: string;
+  password: string;
 }

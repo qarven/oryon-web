@@ -1,6 +1,5 @@
 import type { z } from "zod";
-import type { FlowState } from "../shared/types/flow-state";
-import type { FlowType } from "../shared/types/flow-type";
+import type { Flow } from "../shared/types/flow";
 import type { MfaFactorType } from "../shared/types/mfa-factor-type";
 import type { signInSchema } from "./schema";
 
@@ -23,14 +22,12 @@ export interface User {
   name: string;
 }
 
-export interface Flow {
-  expiresAt: Date;
-  flowState: FlowState;
-  flowType: FlowType;
-  id: bigint;
+export interface LoginInput {
+  email: string;
+  password: string;
 }
 
-export interface LoginData {
+export interface LoginOutput {
   availableMfaMethods?: MfaFactorType[];
   flow?: Flow;
   token?: Token;
