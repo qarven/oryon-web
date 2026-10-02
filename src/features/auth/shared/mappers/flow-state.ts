@@ -19,3 +19,22 @@ export function toModelFlowState(value: AuthFlowState): FlowState {
       return FlowState.Unknown;
   }
 }
+
+export function toProtoFlowState(value: FlowState): AuthFlowState {
+  switch (value) {
+    case FlowState.PendingIdentifier:
+      return AuthFlowState.PENDING_IDENTIFIER;
+    case FlowState.PendingPassword:
+      return AuthFlowState.PENDING_PASSWORD;
+    case FlowState.PendingMfa:
+      return AuthFlowState.PENDING_MFA;
+    case FlowState.PendingVerification:
+      return AuthFlowState.PENDING_VERIFICATION;
+    case FlowState.Completed:
+      return AuthFlowState.COMPLETED;
+    case FlowState.Failed:
+      return AuthFlowState.FAILED;
+    default:
+      return AuthFlowState.UNSPECIFIED;
+  }
+}

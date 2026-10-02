@@ -11,6 +11,7 @@ export const env = createEnv({
   server: {
     ENV: z.string(),
     SERVER_URL: z.url(),
+    TURNSTILE_SECRET_KEY: z.string(),
   },
   runtimeEnv: {
     VITE_APP_TITLE: import.meta.env.VITE_APP_TITLE,
@@ -18,5 +19,6 @@ export const env = createEnv({
     //
     ENV: process.env.NODE_ENV,
     SERVER_URL: process.env.SERVER_URL,
+    TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
   },
 });

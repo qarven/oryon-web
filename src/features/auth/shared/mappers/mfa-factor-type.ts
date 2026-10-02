@@ -17,3 +17,20 @@ export function toModelMfaFactorType(value: ProtoMfaFactorType): MfaFactorType {
       return MfaFactorType.Unknown;
   }
 }
+
+export function toProtoMfaFactorType(value: MfaFactorType): ProtoMfaFactorType {
+  switch (value) {
+    case MfaFactorType.Totp:
+      return ProtoMfaFactorType.TOTP;
+    case MfaFactorType.Sms:
+      return ProtoMfaFactorType.SMS;
+    case MfaFactorType.Email:
+      return ProtoMfaFactorType.EMAIL;
+    case MfaFactorType.Webauthn:
+      return ProtoMfaFactorType.WEBAUTHN;
+    case MfaFactorType.BackupCode:
+      return ProtoMfaFactorType.BACKUP_CODE;
+    default:
+      return ProtoMfaFactorType.UNSPECIFIED;
+  }
+}

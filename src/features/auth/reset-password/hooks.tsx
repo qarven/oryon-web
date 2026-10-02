@@ -1,26 +1,27 @@
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "@tanstack/react-router";
 import type { SubmitEvent } from "react";
 import { useAppForm } from "#/components/form/use-form";
 import { toast } from "#/components/ui/toast";
-import type { ResetPasswordOutput } from "./model";
 import { resetPasswordSchema } from "./schema";
 import { resetPasswordFn } from "./service";
 
 export const useResetPassword = () => {
+  const router = useRouter();
+
   const { mutateAsync } = useMutation({
     mutationFn: resetPasswordFn,
     onError: (error) => {
       toast.add({
         type: "error",
-        title: "error",
+        title: "Reset Password failed",
         description: error.message,
       });
     },
-    onSuccess: (output: ResetPasswordOutput) => {
-      toast.add({
-        type: "info",
-        title: output.success,
-        description: "success",
+    onSuccess: () => {
+      router.navigate({
+        replace: true,
+        to: "/verify-reset",
       });
     },
   });

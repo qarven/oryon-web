@@ -15,3 +15,18 @@ export function toModelFlowType(value: AuthFlowType): FlowType {
       return FlowType.Unknown;
   }
 }
+
+export function toProtoFlowType(value: FlowType): AuthFlowType {
+  switch (value) {
+    case FlowType.Registration:
+      return AuthFlowType.REGISTRATION;
+    case FlowType.Login:
+      return AuthFlowType.LOGIN;
+    case FlowType.Recovery:
+      return AuthFlowType.RECOVERY;
+    case FlowType.StepUpMfa:
+      return AuthFlowType.STEP_UP_MFA;
+    default:
+      return AuthFlowType.UNSPECIFIED;
+  }
+}

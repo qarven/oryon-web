@@ -28,6 +28,11 @@ export const useSignIn = () => {
         return;
       }
 
+      router.navigate({
+        replace: true,
+        to: "/console",
+      });
+
       toast.add({
         type: "info",
         title: "Signed in",

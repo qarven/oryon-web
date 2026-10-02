@@ -5,9 +5,9 @@ import { convertProtoTimeToDate } from "#/lib/utils/date";
 import { toModelFlowState } from "../shared/mappers/flow-state";
 import { toModelFlowType } from "../shared/mappers/flow-type";
 import { toModelMfaFactorType } from "../shared/mappers/mfa-factor-type";
-import type { LoginData, SignInInput } from "./model";
+import type { LoginInput, LoginOutput } from "./model";
 
-export const login = async (input: SignInInput): Promise<LoginData> => {
+export const login = async (input: LoginInput): Promise<LoginOutput> => {
   const request = create(LoginRequestSchema, {
     identifier: input.email,
     password: input.password,
@@ -15,10 +15,10 @@ export const login = async (input: SignInInput): Promise<LoginData> => {
 
   const response = await authenticationClient.login(request);
 
-  const data: LoginData = {};
+  const data: LoginOutput = {};
 
   switch (response.result.case) {
-    case "success":
+    case "loginToken":
       if (response.result.value.token !== undefined) {
         data.token = {
           accessToken: response.result.value.token.accessToken,
@@ -36,7 +36,7 @@ export const login = async (input: SignInInput): Promise<LoginData> => {
       }
 
       break;
-    case "mfa":
+    case "loginMfa":
       if (response.result.value.availableMfaMethods.length > 0) {
         data.availableMfaMethods =
           response.result.value.availableMfaMethods.map(toModelMfaFactorType);

@@ -16,16 +16,7 @@ const config = defineConfig({
       project: "./project.inlang",
       outdir: "./src/lib/paraglide",
       outputStructure: "message-modules",
-      strategy: ["url", "localStorage", "preferredLanguage", "baseLocale"],
-      urlPatterns: [
-        {
-          pattern: "/:path(.*)?",
-          localized: [
-            ["en", "/en/:path(.*)?"],
-            ["id", "/id/:path(.*)?"],
-          ],
-        },
-      ],
+      strategy: ["localStorage", "preferredLanguage", "baseLocale"],
     }),
     nitro({
       compressPublicAssets: {
