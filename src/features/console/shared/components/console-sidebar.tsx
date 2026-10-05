@@ -6,35 +6,33 @@ import {
   TerminalSquareIcon,
 } from "lucide-react";
 import type { ComponentProps } from "react";
-import { NavMain } from "#/components/nav-main.tsx";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "#/components/ui/sidebar.tsx";
 import { env } from "#/env";
+import { ConsoleNavigation } from "./console-navigation";
+import { ConsoleUser } from "./console-user";
 
 const data = {
-  navMain: [
+  user: {
+    name: "shadcn",
+    email: "m@example.com",
+    avatar: "/avatars/shadcn.jpg",
+  },
+  navFeatures: [
     {
       title: "Playground",
       url: "#",
       icon: <TerminalSquareIcon />,
-      isActive: true,
       items: [
         {
           title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
           url: "#",
         },
       ],
@@ -48,14 +46,6 @@ const data = {
           title: "Genesis",
           url: "#",
         },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
       ],
     },
     {
@@ -65,18 +55,6 @@ const data = {
       items: [
         {
           title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
           url: "#",
         },
       ],
@@ -90,18 +68,6 @@ const data = {
           title: "General",
           url: "#",
         },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
       ],
     },
   ],
@@ -109,7 +75,7 @@ const data = {
 
 export function ConsoleSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar variant="inset" {...props} className="p-0">
+    <Sidebar variant="inset" {...props}>
       <SidebarHeader className="h-16">
         <SidebarMenu>
           <SidebarMenuItem>
@@ -136,8 +102,12 @@ export function ConsoleSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <ConsoleNavigation items={data.navFeatures} label="Features" />
       </SidebarContent>
+
+      <SidebarFooter>
+        <ConsoleUser user={data.user} />
+      </SidebarFooter>
     </Sidebar>
   );
 }

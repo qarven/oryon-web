@@ -9,6 +9,16 @@ import { defineConfig } from "vite";
 
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
+  build: {
+    rolldownOptions: {
+      onLog(level, log, handler) {
+        if (log.code === "MODULE_LEVEL_DIRECTIVE") {
+          return;
+        }
+        handler(level, log);
+      },
+    },
+  },
   plugins: [
     devtools(),
     paraglideVitePlugin({

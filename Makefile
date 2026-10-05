@@ -46,7 +46,16 @@ test: ## Run Playwright tests.
 
 podman-build: ## Build production Podman image.
 	@if podman image inspect oryon-web:latest>/dev/null 2>&1; then podman rmi -f oryon-web:latest; fi
-	@podman build -t oryon-web:latest
+	@set -a; . ./.env; set +a; \
+	podman build -t oryon-web:latest -f Dockerfile \
+		--build-arg VITE_APP_TITLE="$$VITE_APP_TITLE" \
+		--build-arg VITE_SITE_URL="$$VITE_SITE_URL" \
+		--build-arg VITE_APP_TURNSTILE_SITE_KEY="$$VITE_APP_TURNSTILE_SITE_KEY" \
+		.
 
 podman-run: ## Run production Podman image.
-	@podman run --rm -p 3000:3000 oryon-web:latest
+	@set -a; . ./.env; set +a; \
+	podman run --rm -p 3000:3000 \
+		-e SERVER_URL \
+		-e TURNSTILE_SECRET_KEY \
+		oryon-web:latest

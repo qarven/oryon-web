@@ -14,5 +14,12 @@
         "noJsxPropsBind": "off"
       }
     }
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "useSortedInterfaceMembers": "off"
+      }
+    }
   }
 }

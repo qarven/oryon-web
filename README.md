@@ -91,6 +91,39 @@ The production container is exposed on port `3000`.
 ├── mono/           # Git submodule / generated shared code
 ├── public/         # Static assets
 ├── src/            # Application source
+│   ├── app
+│   │   ├── middlewares
+│   │   └── providers
+│   ├── components
+│   │   ├── form
+│   │   ├── logos
+│   │   └── ui
+│   ├── features
+│   │   ├── auth
+│   │   │   ├── application
+│   │   │   │   ├── ports
+│   │   │   │   └── use-cases
+│   │   │   ├── domain
+│   │   │   │   ├── mappers
+│   │   │   │   └── types
+│   │   │   ├── infrastructure
+│   │   │   │   ├── cookies
+│   │   │   │   ├── data
+│   │   │   │   ├── middlewares
+│   │   │   │   └── servers
+│   │   │   └── presentation
+│   │   │       ├── components
+│   │   │       ├── hooks
+│   │   │       └── models
+│   │   └── ...
+│   ├── lib
+│   │   ├── clients
+│   │   ├── hooks
+│   │   ├── paraglide
+│   │   │   └── messages
+│   │   └── utils
+│   └── routes
+├── features
 ├── project.inlang/ # Localization configuration
 ├── .env.example    # Environment variable template
 ├── Dockerfile      # Production container definition

@@ -1,6 +1,7 @@
 import { createClient, type Interceptor } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
 import { AuthenticationService } from "@qarven/mono/oryon/identity/v1/authentication_pb";
+import { SessionService } from "@qarven/mono/oryon/identity/v1/session_pb";
 import { env } from "#/env";
 
 const USER_AGENT = "oryon-web/v1.0.0" as const;
@@ -20,3 +21,5 @@ export const authenticationClient = createClient(
   AuthenticationService,
   publicTransport
 );
+
+export const sessionClient = createClient(SessionService, publicTransport);

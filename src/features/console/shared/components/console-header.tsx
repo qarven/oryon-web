@@ -11,13 +11,15 @@ import { SidebarTrigger } from "#/components/ui/sidebar";
 
 export function ConsoleHeader() {
   return (
-    <header className="flex h-12 shrink-0 items-center gap-2 border-b">
+    <header className="flex h-16 shrink-0 items-center gap-2 border-b">
       <div className="flex items-center gap-2 px-4">
         <SidebarTrigger className="-ml-1" />
+
         <Separator
-          className="mr-2 data-[orientation=vertical]:h-12"
+          className="mr-2 data-[orientation=vertical]:h-6"
           orientation="vertical"
         />
+
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem className="hidden md:block">
@@ -33,7 +35,6 @@ export function ConsoleHeader() {
 
       <div className="ml-auto flex items-center gap-2 pr-4">
         {/* <AppNavNotification /> */}
-        {/* <AppNavUser /> */}
       </div>
     </header>
   );

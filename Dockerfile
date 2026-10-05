@@ -3,9 +3,13 @@ WORKDIR /app
 ENV HUSKY=0
 ENV PRERENDER=false
 RUN corepack enable
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+COPY mono/gen/ts ./mono/gen/ts
+COPY package.json .
+RUN pnpm install
 COPY . .
+ARG VITE_APP_TITLE
+ARG VITE_SITE_URL
+ARG VITE_APP_TURNSTILE_SITE_KEY
 RUN pnpm build
 
 FROM gcr.io/distroless/nodejs24-debian13:nonroot

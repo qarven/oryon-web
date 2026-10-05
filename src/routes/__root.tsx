@@ -15,6 +15,7 @@ import { NotFoundComponent } from "#/components/404";
 import { Toaster } from "#/components/ui/toast";
 import { TooltipProvider } from "#/components/ui/tooltip";
 import { getLocale } from "#/lib/paraglide/runtime";
+import { seoMeta } from "#/lib/utils/seo";
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -30,14 +31,12 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         name: "viewport",
         content: "width=device-width, initial-scale=1",
       },
-      {
+      ...seoMeta({
         title: "Identity that just works for your users · Oryon",
-      },
-      {
-        name: "description",
-        content:
+        description:
           "Complete authentication and authorization platform. Secure login, MFA, verification and fine-grained permissions.",
-      },
+        path: "/",
+      }),
     ],
     links: [
       {

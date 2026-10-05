@@ -7,6 +7,7 @@ export const env = createEnv({
   client: {
     VITE_APP_TITLE: z.string(),
     VITE_APP_TURNSTILE_SITE_KEY: z.string(),
+    VITE_SITE_URL: z.url(),
   },
   server: {
     ENV: z.string(),
@@ -16,6 +17,7 @@ export const env = createEnv({
   runtimeEnv: {
     VITE_APP_TITLE: import.meta.env.VITE_APP_TITLE,
     VITE_APP_TURNSTILE_SITE_KEY: import.meta.env.VITE_APP_TURNSTILE_SITE_KEY,
+    VITE_SITE_URL: import.meta.env.VITE_SITE_URL,
     //
     ENV: process.env.NODE_ENV,
     SERVER_URL: process.env.SERVER_URL,
