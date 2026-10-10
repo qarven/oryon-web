@@ -1,8 +1,10 @@
 import { create } from "@bufbuild/protobuf";
 import {
+  BeginWebAuthnLoginRequestSchema,
   CompleteLoginMfaRequestSchema,
   CompletePasswordResetRequestSchema,
   CompleteRegistrationRequestSchema,
+  CompleteWebAuthnLoginRequestSchema,
   InitiatePasswordResetRequestSchema,
   LoginRequestSchema,
   RefreshTokenRequestSchema,
@@ -14,8 +16,11 @@ import { catchErrorServer } from "#/lib/clients/error";
 import { convertProtoTimeToDate } from "#/lib/utils/date";
 import type {
   AuthenticationService,
+  BeginWebAuthnLoginRequest,
+  BeginWebAuthnLoginResult,
   CompleteLoginMfaRequest,
   CompleteRegistrationRequest,
+  CompleteWebAuthnLoginRequest,
   LoginRequest,
   LoginResult,
   RefreshTokenRequest,
@@ -125,6 +130,62 @@ export class Authentication implements AuthenticationService {
         flowId: input.flowId,
       });
       const response = await authenticationClient.completeLoginMfa(request);
+
+      if (!response.token) {
+        throw new Error("unsupported response api");
+      }
+
+      return {
+        accessToken: response.token.accessToken,
+        expiresIn: response.token.expiresIn,
+        refreshToken: response.token.refreshToken,
+      };
+    } catch (error) {
+      throw catchErrorServer(error);
+    }
+  }
+
+  async beginWebAuthnLogin(
+    input: BeginWebAuthnLoginRequest
+  ): Promise<BeginWebAuthnLoginResult> {
+    try {
+      const request = create(BeginWebAuthnLoginRequestSchema, {
+        flowId: input.flowId,
+      });
+      const response = await authenticationClient.beginWebAuthnLogin(request);
+
+      const result: BeginWebAuthnLoginResult = {
+        requestOptionsJson: response.requestOptionsJson,
+      };
+
+      if (response.flow?.expiresAt !== undefined) {
+        result.flow = {
+          id: response.flow.id,
+          flowType: toModelFlowType(response.flow.flowType),
+          flowState: toModelFlowState(response.flow.flowState),
+          expiresAt: convertProtoTimeToDate(
+            response.flow.expiresAt.seconds,
+            response.flow.expiresAt.nanos
+          ),
+        };
+      }
+
+      return result;
+    } catch (error) {
+      throw catchErrorServer(error);
+    }
+  }
+
+  async completeWebAuthnLogin(
+    input: CompleteWebAuthnLoginRequest
+  ): Promise<Token> {
+    try {
+      const request = create(CompleteWebAuthnLoginRequestSchema, {
+        assertionResponseJson: input.assertionResponseJson,
+        flowId: input.flowId,
+      });
+      const response =
+        await authenticationClient.completeWebAuthnLogin(request);
 
       if (!response.token) {
         throw new Error("unsupported response api");

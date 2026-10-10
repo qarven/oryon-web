@@ -4,42 +4,21 @@ import { useEffect, useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "#/components/ui/alert";
 import { Button } from "#/components/ui/button";
 import { Field, FieldDescription, FieldSeparator } from "#/components/ui/field";
-import { toast } from "#/components/ui/toast";
 import { FormLayout } from "../components/form-layout";
+import { useTwoFactorWebauthn } from "../hooks/use-two-factor-webauthn";
 
 export function TwoFactorWebauthn() {
-  // A browser without WebAuthn cannot complete this step at all, so disable the
-  // call to action instead of letting it fail on click. Checked in an effect
-  // because the server has no `window`, and rendering the check directly would
-  // mismatch on hydration.
-  const [isSupported, setIsSupported] = useState(false);
+  // Assume WebAuthn is supported until the client proves otherwise. The real
+  // check needs `window`, which the server lacks; starting at `false` renders
+  // `disabled` into the SSR HTML but not the first client paint, which React
+  // reports as a hydration mismatch. The effect below corrects unsupported
+  // browsers right after hydration.
+  const [isSupported, setIsSupported] = useState(true);
+  const { handlePasskey, isPending } = useTwoFactorWebauthn();
 
   useEffect(() => {
     setIsSupported(typeof window.PublicKeyCredential !== "undefined");
   }, []);
-
-  const handlePasskey = () => {
-    // TODO: no backend support yet, so this cannot be completed.
-    //
-    // 1. A "begin" RPC is required to start the ceremony. Nothing in the proto
-    //    serves one: `AuthenticationService` has no WebAuthn RPC, and
-    //    `VerificationChallenge` (`authentication.proto:43`) is an
-    //    identifier + `VerificationPurpose` OTP challenge, not a WebAuthn
-    //    challenge. It must return the `PublicKeyCredentialRequestOptionsJSON`
-    //    (challenge, rpId, allowCredentials, userVerification).
-    // 2. Call `navigator.credentials.get()` with those options.
-    // 3. A "finish" RPC is required to verify the resulting
-    //    `PublicKeyCredentialJSON`. `CompleteMfaRequest`
-    //    (`authentication.proto:146`) is only `{ flow_id, code, factor_type }`,
-    //    so an assertion cannot be carried in `code`, and it is unverifiable
-    //    without the challenge the server never issued.
-    toast.add({
-      type: "info",
-      title: "Passkeys are not available yet",
-      description:
-        "Passkey verification needs backend support before it can be used.",
-    });
-  };
 
   return (
     <FormLayout
@@ -47,9 +26,15 @@ export function TwoFactorWebauthn() {
       title="Use a passkey"
     >
       <Field className="gap-2">
-        <Button disabled={!isSupported} onClick={handlePasskey} size="lg">
+        <Button
+          disabled={!isSupported || isPending}
+          onClick={handlePasskey}
+          size="lg"
+        >
           <Fingerprint />
-          Sign in with a passkey
+          {isPending
+            ? "Waiting for your security key..."
+            : "Sign in with a passkey"}
         </Button>
       </Field>
 

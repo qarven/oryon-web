@@ -25,6 +25,20 @@ export interface CompleteLoginMfaRequest {
   factorType: MfaFactorType;
 }
 
+export interface BeginWebAuthnLoginRequest {
+  flowId: string;
+}
+
+export interface BeginWebAuthnLoginResult {
+  flow?: Flow;
+  requestOptionsJson: string;
+}
+
+export interface CompleteWebAuthnLoginRequest {
+  assertionResponseJson: string;
+  flowId: string;
+}
+
 export interface RegistrationRequest {
   name: string;
   email?: string;
@@ -53,6 +67,12 @@ export interface AuthenticationService {
   login: (input: LoginRequest) => Promise<LoginResult>;
   refreshToken: (input: RefreshTokenRequest) => Promise<Token>;
   completeLoginMfa: (input: CompleteLoginMfaRequest) => Promise<Token>;
+  beginWebAuthnLogin: (
+    input: BeginWebAuthnLoginRequest
+  ) => Promise<BeginWebAuthnLoginResult>;
+  completeWebAuthnLogin: (
+    input: CompleteWebAuthnLoginRequest
+  ) => Promise<Token>;
 
   registration: (input: RegistrationRequest) => Promise<Flow>;
   completeRegistration: (input: CompleteRegistrationRequest) => Promise<void>;

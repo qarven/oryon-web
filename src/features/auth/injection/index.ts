@@ -1,4 +1,8 @@
 import {
+  BeginWebAuthnLogin,
+  type BeginWebAuthnLoginUseCase,
+} from "../application/use-cases/begin-webauthn-login";
+import {
   CompleteLoginMfa,
   type CompleteLoginMfaUseCase,
 } from "../application/use-cases/complete-login-mfa";
@@ -10,6 +14,10 @@ import {
   CompleteRegistration,
   type CompleteRegistrationUseCase,
 } from "../application/use-cases/complete-registration";
+import {
+  CompleteWebAuthnLogin,
+  type CompleteWebAuthnLoginUseCase,
+} from "../application/use-cases/complete-webauthn-login";
 import {
   ResendRegistrationCode,
   type ResendRegistrationCodeUseCase,
@@ -30,7 +38,9 @@ import { Cloudflare } from "../infrastructure/services/cloudflare";
 import { Session as SessionApi } from "../infrastructure/services/session";
 
 export interface Dependency {
+  beginWebAuthnLoginUseCase: BeginWebAuthnLoginUseCase;
   completeLoginMfaUseCase: CompleteLoginMfaUseCase;
+  completeWebAuthnLoginUseCase: CompleteWebAuthnLoginUseCase;
   completePasswordResetUseCase: CompletePasswordResetUseCase;
   completeRegistrationUseCase: CompleteRegistrationUseCase;
   resetPasswordUseCase: ResetPasswordUseCase;
@@ -51,7 +61,9 @@ class Container {
     const sessionService = new SessionApi();
 
     // Application layer
+    const beginWebAuthnLoginUseCase = new BeginWebAuthnLogin(authService);
     const completeLoginMfaUseCase = new CompleteLoginMfa(authService);
+    const completeWebAuthnLoginUseCase = new CompleteWebAuthnLogin(authService);
     const completePasswordResetUseCase = new CompletePasswordReset(authService);
     const completeRegistrationUseCase = new CompleteRegistration(authService);
     const resetPasswordUseCase = new ResetPassword(authService, captchaService);
@@ -64,7 +76,9 @@ class Container {
     const sessionUseCase = new Session(authService);
 
     this.dependency = {
+      beginWebAuthnLoginUseCase,
       completeLoginMfaUseCase,
+      completeWebAuthnLoginUseCase,
       completePasswordResetUseCase,
       completeRegistrationUseCase,
       resetPasswordUseCase,
@@ -78,6 +92,14 @@ class Container {
 
   getCompleteLoginMfaUseCase(): CompleteLoginMfaUseCase {
     return this.dependency.completeLoginMfaUseCase;
+  }
+
+  getBeginWebAuthnLoginUseCase(): BeginWebAuthnLoginUseCase {
+    return this.dependency.beginWebAuthnLoginUseCase;
+  }
+
+  getCompleteWebAuthnLoginUseCase(): CompleteWebAuthnLoginUseCase {
+    return this.dependency.completeWebAuthnLoginUseCase;
   }
 
   getCompletePasswordResetUseCase(): CompletePasswordResetUseCase {

@@ -4,6 +4,7 @@ import type { SubmitEvent } from "react";
 import { useAppForm } from "#/components/form/use-form";
 import { toast } from "#/components/ui/toast";
 import type { SignInOutput } from "../../application/use-cases/sign-in";
+import { MfaFactorType } from "../../domain/mfa-factor-type";
 import { signInMutation } from "../controllers/sign-in-mutation";
 import { signInSchema } from "../schemas/sign-in";
 
@@ -23,7 +24,9 @@ export const useSignIn = () => {
       if (output.mfaRequired) {
         router.navigate({
           replace: true,
-          to: "/two-factor/app",
+          to: output.availableMfaMethods.includes(MfaFactorType.Webauthn)
+            ? "/two-factor/webauthn"
+            : "/two-factor/app",
         });
         return;
       }
