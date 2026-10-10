@@ -1,50 +1,29 @@
-import { Link } from "@tanstack/react-router";
-import { Field, FieldDescription, FieldSeparator } from "#/components/ui/field";
-import { FormLayout } from "../components/form-layout";
+import { ResetPasswordForm } from "../components/reset-password-form";
+import { ResetPasswordSuccess } from "../components/reset-password-success";
+import { SetNewPasswordForm } from "../components/set-new-password-form";
+import { useCompletePasswordReset } from "../hooks/use-complete-password-reset";
 import { useResetPassword } from "../hooks/use-reset-password";
 
-export function ResetPassword() {
-  const { form, onSubmitDefault } = useResetPassword();
+export function ResetPassword({ token }: { token?: string }) {
+  if (token && token.length > 80 && token.length < 100) {
+    return <CompletePasswordResetView code={token} />;
+  }
 
-  return (
-    <FormLayout
-      onSubmit={onSubmitDefault}
-      subtitle="Enter your user account's verified email address and we will send you a verification code."
-      title="Reset your password"
-    >
-      <form.AppField name="email">
-        {(field) => (
-          <field.TextField
-            autoComplete="email"
-            label="Email"
-            placeholder="email@oryon.com"
-          />
-        )}
-      </form.AppField>
+  return <RequestPasswordResetView />;
+}
 
-      <form.AppField name="captchaToken">
-        {(field) => <field.TurnstileField />}
-      </form.AppField>
+function CompletePasswordResetView({ code }: { code: string }) {
+  const { form, onSubmitDefault } = useCompletePasswordReset(code);
 
-      <form.AppForm>
-        <form.SubmitField
-          idleText="Send recovery link"
-          pendingText="Sending recovery link..."
-        />
-      </form.AppForm>
+  return <SetNewPasswordForm form={form} onSubmitDefault={onSubmitDefault} />;
+}
 
-      <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-        OR
-      </FieldSeparator>
+function RequestPasswordResetView() {
+  const { form, onSubmitDefault, isSuccess, email, reset } = useResetPassword();
 
-      <Field className="gap-4">
-        <FieldDescription className="text-center">
-          <span>Remember your password? </span>
-          <Link replace to="/signin">
-            Sign in
-          </Link>
-        </FieldDescription>
-      </Field>
-    </FormLayout>
-  );
+  if (isSuccess) {
+    return <ResetPasswordSuccess email={email} reset={reset} />;
+  }
+
+  return <ResetPasswordForm form={form} onSubmitDefault={onSubmitDefault} />;
 }

@@ -1,5 +1,3 @@
-import { setEmailCookie } from "../../infrastructure/cookies/email";
-import { setVerificationCookie } from "../../infrastructure/cookies/verification";
 import type { AuthenticationService } from "../ports/authentication-service";
 import type { CaptchaService } from "../ports/captcha-service";
 
@@ -27,11 +25,8 @@ export class ResetPassword implements ResetPasswordUseCase {
   async exec(input: ResetPasswordInput): Promise<void> {
     await this.captchaService.verify(input.captchaToken);
 
-    const challenge = await this.authService.initiatePasswordReset({
+    await this.authService.initiatePasswordReset({
       identifier: input.email,
     });
-
-    setVerificationCookie(challenge.id, challenge.expiresAt);
-    setEmailCookie(input.email, challenge.expiresAt);
   }
 }

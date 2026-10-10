@@ -2,7 +2,6 @@ import type { Flow } from "../../domain/flow";
 import type { MfaFactorType } from "../../domain/mfa-factor-type";
 import type { Token } from "../../domain/token";
 import type { User } from "../../domain/user";
-import type { VerificationChallenge } from "../../domain/verification-challenge";
 
 export interface LoginRequest {
   email: string;
@@ -48,7 +47,6 @@ export interface InitiatePasswordResetRequest {
 export interface CompletePasswordResetRequest {
   code: string;
   newPassword: string;
-  verificationId: string;
 }
 
 export interface AuthenticationService {
@@ -62,8 +60,6 @@ export interface AuthenticationService {
     input: ResendRegistrationCodeRequest
   ) => Promise<Flow>;
 
-  initiatePasswordReset: (
-    input: InitiatePasswordResetRequest
-  ) => Promise<VerificationChallenge>;
+  initiatePasswordReset: (input: InitiatePasswordResetRequest) => Promise<void>;
   completePasswordReset: (input: CompletePasswordResetRequest) => Promise<void>;
 }

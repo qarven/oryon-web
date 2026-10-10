@@ -12,12 +12,10 @@ import { Route as rootRouteImport } from './../routes/__root'
 import { Route as AuthRouteRouteImport } from './../routes/_auth/route'
 import { Route as PublicRouteRouteImport } from './../routes/_public/route'
 import { Route as ConsoleRouteRouteImport } from './../routes/console/route'
-import { Route as AuthChangePasswordRouteImport } from './../routes/_auth/change-password'
 import { Route as AuthResetPasswordRouteImport } from './../routes/_auth/reset-password'
 import { Route as AuthSigninRouteImport } from './../routes/_auth/signin'
 import { Route as AuthSignupRouteImport } from './../routes/_auth/signup'
 import { Route as AuthTwoFactorRouteRouteImport } from './../routes/_auth/two-factor/route'
-import { Route as AuthVerifyResetRouteImport } from './../routes/_auth/verify-reset'
 import { Route as AuthVerifySignupRouteImport } from './../routes/_auth/verify-signup'
 import { Route as PublicIndexRouteImport } from './../routes/_public/index'
 import { Route as ConsoleIndexRouteImport } from './../routes/console/index'
@@ -42,11 +40,6 @@ const ConsoleRouteRoute = ConsoleRouteRouteImport.update({
   path: '/console',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthChangePasswordRoute = AuthChangePasswordRouteImport.update({
-  id: '/change-password',
-  path: '/change-password',
-  getParentRoute: () => AuthRouteRoute,
-} as any)
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -65,11 +58,6 @@ const AuthSignupRoute = AuthSignupRouteImport.update({
 const AuthTwoFactorRouteRoute = AuthTwoFactorRouteRouteImport.update({
   id: '/two-factor',
   path: '/two-factor',
-  getParentRoute: () => AuthRouteRoute,
-} as any)
-const AuthVerifyResetRoute = AuthVerifyResetRouteImport.update({
-  id: '/verify-reset',
-  path: '/verify-reset',
   getParentRoute: () => AuthRouteRoute,
 } as any)
 const AuthVerifySignupRoute = AuthVerifySignupRouteImport.update({
@@ -129,11 +117,9 @@ export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/console': typeof ConsoleRouteRouteWithChildren
   '/two-factor': typeof AuthTwoFactorRouteRouteWithChildren
-  '/change-password': typeof AuthChangePasswordRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/signin': typeof AuthSigninRoute
   '/signup': typeof AuthSignupRoute
-  '/verify-reset': typeof AuthVerifyResetRoute
   '/verify-signup': typeof AuthVerifySignupRoute
   '/console/': typeof ConsoleIndexRoute
   '/two-factor/app': typeof AuthTwoFactorAppRoute
@@ -146,11 +132,9 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
-  '/change-password': typeof AuthChangePasswordRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/signin': typeof AuthSigninRoute
   '/signup': typeof AuthSignupRoute
-  '/verify-reset': typeof AuthVerifyResetRoute
   '/verify-signup': typeof AuthVerifySignupRoute
   '/console': typeof ConsoleIndexRoute
   '/two-factor/app': typeof AuthTwoFactorAppRoute
@@ -167,11 +151,9 @@ export interface FileRoutesById {
   '/_public': typeof PublicRouteRouteWithChildren
   '/console': typeof ConsoleRouteRouteWithChildren
   '/_auth/two-factor': typeof AuthTwoFactorRouteRouteWithChildren
-  '/_auth/change-password': typeof AuthChangePasswordRoute
   '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_auth/signin': typeof AuthSigninRoute
   '/_auth/signup': typeof AuthSignupRoute
-  '/_auth/verify-reset': typeof AuthVerifyResetRoute
   '/_auth/verify-signup': typeof AuthVerifySignupRoute
   '/_public/': typeof PublicIndexRoute
   '/console/': typeof ConsoleIndexRoute
@@ -189,11 +171,9 @@ export interface FileRouteTypes {
     | '/'
     | '/console'
     | '/two-factor'
-    | '/change-password'
     | '/reset-password'
     | '/signin'
     | '/signup'
-    | '/verify-reset'
     | '/verify-signup'
     | '/console/'
     | '/two-factor/app'
@@ -206,11 +186,9 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/change-password'
     | '/reset-password'
     | '/signin'
     | '/signup'
-    | '/verify-reset'
     | '/verify-signup'
     | '/console'
     | '/two-factor/app'
@@ -226,11 +204,9 @@ export interface FileRouteTypes {
     | '/_public'
     | '/console'
     | '/_auth/two-factor'
-    | '/_auth/change-password'
     | '/_auth/reset-password'
     | '/_auth/signin'
     | '/_auth/signup'
-    | '/_auth/verify-reset'
     | '/_auth/verify-signup'
     | '/_public/'
     | '/console/'
@@ -272,13 +248,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConsoleRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_auth/change-password': {
-      id: '/_auth/change-password'
-      path: '/change-password'
-      fullPath: '/change-password'
-      preLoaderRoute: typeof AuthChangePasswordRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
     '/_auth/reset-password': {
       id: '/_auth/reset-password'
       path: '/reset-password'
@@ -305,13 +274,6 @@ declare module '@tanstack/react-router' {
       path: '/two-factor'
       fullPath: '/two-factor'
       preLoaderRoute: typeof AuthTwoFactorRouteRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
-    '/_auth/verify-reset': {
-      id: '/_auth/verify-reset'
-      path: '/verify-reset'
-      fullPath: '/verify-reset'
-      preLoaderRoute: typeof AuthVerifyResetRouteImport
       parentRoute: typeof AuthRouteRoute
     }
     '/_auth/verify-signup': {
@@ -406,21 +368,17 @@ const AuthTwoFactorRouteRouteWithChildren =
 
 interface AuthRouteRouteChildren {
   AuthTwoFactorRouteRoute: typeof AuthTwoFactorRouteRouteWithChildren
-  AuthChangePasswordRoute: typeof AuthChangePasswordRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   AuthSigninRoute: typeof AuthSigninRoute
   AuthSignupRoute: typeof AuthSignupRoute
-  AuthVerifyResetRoute: typeof AuthVerifyResetRoute
   AuthVerifySignupRoute: typeof AuthVerifySignupRoute
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthTwoFactorRouteRoute: AuthTwoFactorRouteRouteWithChildren,
-  AuthChangePasswordRoute: AuthChangePasswordRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
   AuthSigninRoute: AuthSigninRoute,
   AuthSignupRoute: AuthSignupRoute,
-  AuthVerifyResetRoute: AuthVerifyResetRoute,
   AuthVerifySignupRoute: AuthVerifySignupRoute,
 }
 

@@ -1,11 +1,11 @@
 import {
-  ChangePassword,
-  type ChangePasswordUseCase,
-} from "../application/use-cases/change-password";
-import {
   CompleteLoginMfa,
   type CompleteLoginMfaUseCase,
 } from "../application/use-cases/complete-login-mfa";
+import {
+  CompletePasswordReset,
+  type CompletePasswordResetUseCase,
+} from "../application/use-cases/complete-password-reset";
 import {
   CompleteRegistration,
   type CompleteRegistrationUseCase,
@@ -25,17 +25,13 @@ import {
   type SignOutUseCase,
 } from "../application/use-cases/sign-out";
 import { SignUp, type SignUpUseCase } from "../application/use-cases/sign-up";
-import {
-  VerifyReset,
-  type VerifyResetUseCase,
-} from "../application/use-cases/verify-reset";
 import { Authentication } from "../infrastructure/services/authentication";
 import { Cloudflare } from "../infrastructure/services/cloudflare";
 import { Session as SessionApi } from "../infrastructure/services/session";
 
 export interface Dependency {
-  changePasswordUseCase: ChangePasswordUseCase;
   completeLoginMfaUseCase: CompleteLoginMfaUseCase;
+  completePasswordResetUseCase: CompletePasswordResetUseCase;
   completeRegistrationUseCase: CompleteRegistrationUseCase;
   resetPasswordUseCase: ResetPasswordUseCase;
   resendRegistrationCodeUseCase: ResendRegistrationCodeUseCase;
@@ -43,7 +39,6 @@ export interface Dependency {
   signInUseCase: SignInUseCase;
   signOutUseCase: SignOutUseCase;
   signUpUseCase: SignUpUseCase;
-  verifyResetUseCase: VerifyResetUseCase;
 }
 
 class Container {
@@ -56,8 +51,8 @@ class Container {
     const sessionService = new SessionApi();
 
     // Application layer
-    const changePasswordUseCase = new ChangePassword(authService);
     const completeLoginMfaUseCase = new CompleteLoginMfa(authService);
+    const completePasswordResetUseCase = new CompletePasswordReset(authService);
     const completeRegistrationUseCase = new CompleteRegistration(authService);
     const resetPasswordUseCase = new ResetPassword(authService, captchaService);
     const resendRegistrationCodeUseCase = new ResendRegistrationCode(
@@ -66,12 +61,11 @@ class Container {
     const signInUseCase = new SignIn(authService);
     const signOutUseCase = new SignOut(sessionService);
     const signUpUseCase = new SignUp(authService, captchaService);
-    const verifyResetUseCase = new VerifyReset();
     const sessionUseCase = new Session(authService);
 
     this.dependency = {
-      changePasswordUseCase,
       completeLoginMfaUseCase,
+      completePasswordResetUseCase,
       completeRegistrationUseCase,
       resetPasswordUseCase,
       resendRegistrationCodeUseCase,
@@ -79,16 +73,15 @@ class Container {
       signInUseCase,
       signOutUseCase,
       signUpUseCase,
-      verifyResetUseCase,
     };
-  }
-
-  getChangePasswordUseCase(): ChangePasswordUseCase {
-    return this.dependency.changePasswordUseCase;
   }
 
   getCompleteLoginMfaUseCase(): CompleteLoginMfaUseCase {
     return this.dependency.completeLoginMfaUseCase;
+  }
+
+  getCompletePasswordResetUseCase(): CompletePasswordResetUseCase {
+    return this.dependency.completePasswordResetUseCase;
   }
 
   getCompleteRegistrationUseCase(): CompleteRegistrationUseCase {
@@ -117,10 +110,6 @@ class Container {
 
   getSignUpUseCase(): SignUpUseCase {
     return this.dependency.signUpUseCase;
-  }
-
-  getVerifyResetUseCase(): VerifyResetUseCase {
-    return this.dependency.verifyResetUseCase;
   }
 }
 

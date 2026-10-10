@@ -33,7 +33,13 @@ export const useSignUp = () => {
       password: "",
       captchaToken: "",
     },
-    onSubmit: async ({ value }) => await mutateAsync({ data: value }),
+    onSubmit: async ({ value }) => {
+      try {
+        await mutateAsync({ data: value });
+      } catch {
+        // Surfaced via the onError toast above.
+      }
+    },
     validators: { onSubmit: signUpSchema },
   });
 

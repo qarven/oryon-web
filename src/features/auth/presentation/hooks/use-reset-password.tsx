@@ -1,27 +1,25 @@
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "@tanstack/react-router";
 import type { SubmitEvent } from "react";
+import { useState } from "react";
 import { useAppForm } from "#/components/form/use-form";
 import { toast } from "#/components/ui/toast";
 import { resetPasswordMutation } from "../controllers/reset-password-mutation";
 import { resetPasswordSchema } from "../schemas/reset-password";
 
 export const useResetPassword = () => {
-  const router = useRouter();
+  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
 
-  const { mutateAsync } = useMutation({
+  const {
+    mutateAsync,
+    isSuccess,
+    reset: resetMutation,
+  } = useMutation({
     mutationFn: resetPasswordMutation,
     onError: (error) => {
       toast.add({
         type: "error",
         title: "Reset Password failed",
         description: error.message,
-      });
-    },
-    onSuccess: () => {
-      router.navigate({
-        replace: true,
-        to: "/verify-reset",
       });
     },
   });
@@ -31,7 +29,14 @@ export const useResetPassword = () => {
       email: "",
       captchaToken: "",
     },
-    onSubmit: async ({ value }) => await mutateAsync({ data: value }),
+    onSubmit: async ({ value }) => {
+      try {
+        await mutateAsync({ data: value });
+        setSubmittedEmail(value.email);
+      } catch {
+        // Surfaced via the onError toast above.
+      }
+    },
     validators: { onSubmit: resetPasswordSchema },
   });
 
@@ -41,8 +46,16 @@ export const useResetPassword = () => {
     form.handleSubmit();
   };
 
+  const reset = () => {
+    setSubmittedEmail(null);
+    resetMutation();
+  };
+
   return {
     form,
     onSubmitDefault,
+    isSuccess,
+    email: submittedEmail,
+    reset,
   };
 };

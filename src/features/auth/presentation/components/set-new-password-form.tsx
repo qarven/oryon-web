@@ -1,11 +1,17 @@
 import { Link } from "@tanstack/react-router";
 import { Field, FieldDescription } from "#/components/ui/field";
-import { FormLayout } from "../components/form-layout";
-import { useChangePassword } from "../hooks/use-change-password";
+import type { useCompletePasswordReset } from "../hooks/use-complete-password-reset";
+import { FormLayout } from "./form-layout";
 
-export function ChangePassword() {
-  const { form, onSubmitDefault } = useChangePassword();
+type SetNewPasswordFormProps = Pick<
+  ReturnType<typeof useCompletePasswordReset>,
+  "form" | "onSubmitDefault"
+>;
 
+export function SetNewPasswordForm({
+  form,
+  onSubmitDefault,
+}: SetNewPasswordFormProps) {
   return (
     <FormLayout
       onSubmit={onSubmitDefault}

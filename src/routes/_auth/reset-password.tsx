@@ -10,5 +10,14 @@ export const Route = createFileRoute("/_auth/reset-password")({
       path: "/reset-password",
     }),
   }),
-  component: ResetPassword,
+  validateSearch: (search: Record<string, unknown>): { token?: string } => {
+    if (typeof search.token === "string" && search.token.trim() !== "") {
+      return { token: search.token };
+    }
+    return {};
+  },
+  component: () => {
+    const { token } = Route.useSearch();
+    return <ResetPassword token={token} />;
+  },
 });

@@ -24,14 +24,12 @@ import type {
 } from "../../application/ports/authentication-service";
 import type { Flow } from "../../domain/flow";
 import type { Token } from "../../domain/token";
-import type { VerificationChallenge } from "../../domain/verification-challenge";
 import { toModelFlowState } from "../mappers/flow-state";
 import { toModelFlowType } from "../mappers/flow-type";
 import {
   toModelMfaFactorType,
   toProtoMfaFactorType,
 } from "../mappers/mfa-factor-type";
-import { toModelVerificationPurpose } from "../mappers/verification-purpose";
 
 export class Authentication implements AuthenticationService {
   async login(input: LoginRequest): Promise<LoginResult> {
@@ -119,6 +117,29 @@ export class Authentication implements AuthenticationService {
     }
   }
 
+  async completeLoginMfa(input: CompleteLoginMfaRequest): Promise<Token> {
+    try {
+      const request = create(CompleteLoginMfaRequestSchema, {
+        code: input.code,
+        factorType: toProtoMfaFactorType(input.factorType),
+        flowId: input.flowId,
+      });
+      const response = await authenticationClient.completeLoginMfa(request);
+
+      if (!response.token) {
+        throw new Error("unsupported response api");
+      }
+
+      return {
+        accessToken: response.token.accessToken,
+        expiresIn: response.token.expiresIn,
+        refreshToken: response.token.refreshToken,
+      };
+    } catch (error) {
+      throw catchErrorServer(error);
+    }
+  }
+
   async registration(input: RegistrationRequest): Promise<Flow> {
     try {
       const request = create(RegistrationRequestSchema, input);
@@ -185,30 +206,13 @@ export class Authentication implements AuthenticationService {
     }
   }
 
-  async initiatePasswordReset(input: {
-    identifier: string;
-  }): Promise<VerificationChallenge> {
+  async initiatePasswordReset(input: { identifier: string }): Promise<void> {
     try {
       const request = create(InitiatePasswordResetRequestSchema, {
         identifier: input.identifier,
       });
 
-      const { challenge } =
-        await authenticationClient.initiatePasswordReset(request);
-
-      if (challenge && challenge.expiresAt !== undefined) {
-        return {
-          id: challenge.id,
-          identifier: challenge.identifier,
-          purpose: toModelVerificationPurpose(challenge.purpose),
-          expiresAt: convertProtoTimeToDate(
-            challenge.expiresAt.seconds,
-            challenge.expiresAt.nanos
-          ),
-        };
-      }
-
-      throw new Error("unsupported response api");
+      await authenticationClient.initiatePasswordReset(request);
     } catch (error) {
       throw catchErrorServer(error);
     }
@@ -217,13 +221,11 @@ export class Authentication implements AuthenticationService {
   async completePasswordReset(input: {
     code: string;
     newPassword: string;
-    verificationId: string;
   }): Promise<void> {
     try {
       const request = create(CompletePasswordResetRequestSchema, {
         code: input.code,
         newPassword: input.newPassword,
-        verificationId: input.verificationId,
       });
 
       const response =
@@ -232,29 +234,6 @@ export class Authentication implements AuthenticationService {
       if (!response.user) {
         throw new Error("unsupported response api");
       }
-    } catch (error) {
-      throw catchErrorServer(error);
-    }
-  }
-
-  async completeLoginMfa(input: CompleteLoginMfaRequest): Promise<Token> {
-    try {
-      const request = create(CompleteLoginMfaRequestSchema, {
-        code: input.code,
-        factorType: toProtoMfaFactorType(input.factorType),
-        flowId: input.flowId,
-      });
-      const response = await authenticationClient.completeLoginMfa(request);
-
-      if (!response.token) {
-        throw new Error("unsupported response api");
-      }
-
-      return {
-        accessToken: response.token.accessToken,
-        expiresIn: response.token.expiresIn,
-        refreshToken: response.token.refreshToken,
-      };
     } catch (error) {
       throw catchErrorServer(error);
     }

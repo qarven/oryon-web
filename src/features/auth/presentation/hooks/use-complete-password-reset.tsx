@@ -3,14 +3,14 @@ import { useRouter } from "@tanstack/react-router";
 import type { SubmitEvent } from "react";
 import { useAppForm } from "#/components/form/use-form";
 import { toast } from "#/components/ui/toast";
-import { changePasswordMutation } from "../controllers/change-password-mutation";
-import { changePasswordSchema } from "../schemas/change-password";
+import { completePasswordResetMutation } from "../controllers/complete-password-reset-mutation";
+import { completePasswordResetSchema } from "../schemas/complete-password-reset";
 
-export const useChangePassword = () => {
+export const useCompletePasswordReset = (code: string) => {
   const router = useRouter();
 
   const { mutateAsync } = useMutation({
-    mutationFn: changePasswordMutation,
+    mutationFn: completePasswordResetMutation,
     onError: (error) => {
       toast.add({
         type: "error",
@@ -19,26 +19,33 @@ export const useChangePassword = () => {
       });
     },
     onSuccess: () => {
+      router.navigate({
+        replace: true,
+        to: "/signin",
+      });
+
       toast.add({
         type: "info",
         title: "Password changed",
         description: "You can now sign in with your new password.",
-      });
-
-      router.navigate({
-        replace: true,
-        to: "/signin",
       });
     },
   });
 
   const form = useAppForm({
     defaultValues: {
+      code,
       newPassword: "",
       confirmPassword: "",
     },
-    onSubmit: async ({ value }) => await mutateAsync({ data: value }),
-    validators: { onSubmit: changePasswordSchema },
+    onSubmit: async ({ value }) => {
+      try {
+        await mutateAsync({ data: value });
+      } catch {
+        // Surfaced via the onError toast above.
+      }
+    },
+    validators: { onSubmit: completePasswordResetSchema },
   });
 
   const onSubmitDefault = (e: SubmitEvent) => {
