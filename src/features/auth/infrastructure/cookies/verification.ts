@@ -49,8 +49,8 @@ export function clearVerificationCookie(): void {
   deleteCookie(VERIFICATION_COOKIE_NAME, { path: "/" });
 }
 
-export function setVerificationCookie(id: bigint, expiresAt: Date): void {
-  const value: VerificationCookieValue = { id: id.toString() };
+export function setVerificationCookie(id: string, expiresAt: Date): void {
+  const value: VerificationCookieValue = { id };
   const encoded = Buffer.from(JSON.stringify(value), "utf8").toString(
     "base64url"
   );

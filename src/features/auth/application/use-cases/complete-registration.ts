@@ -28,7 +28,7 @@ export class CompleteRegistration implements CompleteRegistrationUseCase {
 
     await this.authService.completeRegistration({
       code: input.code,
-      flowId: BigInt(flow.id),
+      flowId: flow.id,
     });
 
     clearFlowCookie();

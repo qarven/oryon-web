@@ -31,7 +31,7 @@ export class ChangePassword implements ChangePasswordUseCase {
     await this.authService.completePasswordReset({
       code: verification.code,
       newPassword: input.newPassword,
-      verificationId: BigInt(verification.id),
+      verificationId: verification.id,
     });
 
     clearVerificationCookie();

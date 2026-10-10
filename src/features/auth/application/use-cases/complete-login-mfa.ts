@@ -30,7 +30,7 @@ export class CompleteLoginMfa implements CompleteLoginMfaUseCase {
 
     const output = await this.authService.completeLoginMfa({
       code: input.code,
-      flowId: BigInt(flow.id),
+      flowId: flow.id,
       factorType: input.factorType,
     });
 

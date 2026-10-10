@@ -29,6 +29,7 @@ export const useResetPassword = () => {
   const form = useAppForm({
     defaultValues: {
       email: "",
+      captchaToken: "",
     },
     onSubmit: async ({ value }) => await mutateAsync({ data: value }),
     validators: { onSubmit: resetPasswordSchema },

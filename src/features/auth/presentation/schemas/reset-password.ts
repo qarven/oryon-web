@@ -5,4 +5,5 @@ export const resetPasswordSchema = z.object({
     .string()
     .transform((val) => val.trim())
     .pipe(z.email("Please enter a valid email address")),
+  captchaToken: z.string().min(1, "Please complete the captcha"),
 });

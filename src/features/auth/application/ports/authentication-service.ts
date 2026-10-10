@@ -22,7 +22,7 @@ export interface RefreshTokenRequest {
 
 export interface CompleteLoginMfaRequest {
   code: string;
-  flowId: bigint;
+  flowId: string;
   factorType: MfaFactorType;
 }
 
@@ -34,11 +34,11 @@ export interface RegistrationRequest {
 
 export interface CompleteRegistrationRequest {
   code: string;
-  flowId: bigint;
+  flowId: string;
 }
 
 export interface ResendRegistrationCodeRequest {
-  flowId: bigint;
+  flowId: string;
 }
 
 export interface InitiatePasswordResetRequest {
@@ -48,7 +48,7 @@ export interface InitiatePasswordResetRequest {
 export interface CompletePasswordResetRequest {
   code: string;
   newPassword: string;
-  verificationId: bigint;
+  verificationId: string;
 }
 
 export interface AuthenticationService {

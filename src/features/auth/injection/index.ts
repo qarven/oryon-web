@@ -59,7 +59,7 @@ class Container {
     const changePasswordUseCase = new ChangePassword(authService);
     const completeLoginMfaUseCase = new CompleteLoginMfa(authService);
     const completeRegistrationUseCase = new CompleteRegistration(authService);
-    const resetPasswordUseCase = new ResetPassword(authService);
+    const resetPasswordUseCase = new ResetPassword(authService, captchaService);
     const resendRegistrationCodeUseCase = new ResendRegistrationCode(
       authService
     );

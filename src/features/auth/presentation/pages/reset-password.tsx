@@ -22,6 +22,10 @@ export function ResetPassword() {
         )}
       </form.AppField>
 
+      <form.AppField name="captchaToken">
+        {(field) => <field.TurnstileField />}
+      </form.AppField>
+
       <form.AppForm>
         <form.SubmitField
           idleText="Send recovery link"

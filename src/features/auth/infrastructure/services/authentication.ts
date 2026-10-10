@@ -217,7 +217,7 @@ export class Authentication implements AuthenticationService {
   async completePasswordReset(input: {
     code: string;
     newPassword: string;
-    verificationId: bigint;
+    verificationId: string;
   }): Promise<void> {
     try {
       const request = create(CompletePasswordResetRequestSchema, {

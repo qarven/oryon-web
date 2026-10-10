@@ -48,7 +48,7 @@ export function clearFlowCookie(): void {
 
 export function setFlowCookie(flow: Flow): void {
   const value: FlowCookieValue = {
-    id: flow.id.toString(),
+    id: flow.id,
     state: flow.flowState,
     type: flow.flowType,
   };

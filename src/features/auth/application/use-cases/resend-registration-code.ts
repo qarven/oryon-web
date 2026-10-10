@@ -22,7 +22,7 @@ export class ResendRegistrationCode implements ResendRegistrationCodeUseCase {
     }
 
     const newFlow = await this.authService.resendRegistrationCode({
-      flowId: BigInt(flow.id),
+      flowId: flow.id,
     });
 
     setFlowCookie(newFlow);

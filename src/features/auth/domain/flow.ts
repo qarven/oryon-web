@@ -5,5 +5,5 @@ export interface Flow {
   expiresAt: Date;
   flowState: FlowState;
   flowType: FlowType;
-  id: bigint;
+  id: string;
 }
