@@ -1,0 +1,56 @@
+import { paraglideVitePlugin } from "@inlang/paraglide-js";
+import babel from "@rolldown/plugin-babel";
+import tailwindcss from "@tailwindcss/vite";
+import { devtools } from "@tanstack/devtools-vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import viteReact, { reactCompilerPreset } from "@vitejs/plugin-react";
+import { nitro } from "nitro/vite";
+import { defineConfig } from "vite";
+
+const config = defineConfig({
+  resolve: { tsconfigPaths: true },
+  build: {
+    rolldownOptions: {
+      onLog(level, log, handler) {
+        if (log.code === "MODULE_LEVEL_DIRECTIVE") {
+          return;
+        }
+        handler(level, log);
+      },
+    },
+  },
+  plugins: [
+    devtools(),
+    paraglideVitePlugin({
+      localStorageKey: "locale",
+      project: "./project.inlang",
+      outdir: "./src/lib/paraglide",
+      outputStructure: "message-modules",
+      strategy: ["localStorage", "preferredLanguage", "baseLocale"],
+    }),
+    nitro({
+      compressPublicAssets: {
+        brotli: true,
+        gzip: true,
+      },
+      rollupConfig: { external: [/^@sentry\//] },
+    }),
+    tailwindcss(),
+    tanstackStart({
+      router: {
+        entry: "app/router.tsx",
+        generatedRouteTree: "app/route-tree.gen.ts",
+      },
+      server: {
+        entry: "app/server.ts",
+      },
+      start: {
+        entry: "app/start.ts",
+      },
+    }),
+    viteReact(),
+    babel({ presets: [reactCompilerPreset()] }),
+  ],
+});
+
+export default config;
